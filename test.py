@@ -22,7 +22,7 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
     while True:
       if done:
         state, reward_sum, done = env.reset(), 0, False
-
+      print("Infinite Loop?", flush = True)
       action = dqn.act_e_greedy(state)  # Choose an action ε-greedily
       state, reward, done = env.step(action)  # Step
       reward_sum += reward
@@ -32,8 +32,9 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
       if done:
         T_rewards.append(reward_sum)
         break
+  print("Point 8", flush = True)		
   env.close()
-
+  print("Point 9", flush = True)
   # Test Q-values over validation memory
   for state in val_mem:  # Iterate over valid states
     T_Qs.append(dqn.evaluate_q(state))

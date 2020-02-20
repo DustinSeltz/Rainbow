@@ -51,6 +51,7 @@ class Env():
     if self._get_total_reward() is not None:
       reward += self._get_total_reward()
     observation = self._get_state()
+    done = not self.grid._game_over
     self.state_buffer.append(observation)
     # Return state, reward, done
     return torch.stack(list(self.state_buffer), 0), reward, done
@@ -68,4 +69,5 @@ class Env():
   def render(): #modified for safety environment
     pass
   def close(self):
-    cv2.destroyAllWindows()
+    #cv2.destroyAllWindows()
+    self.grid.reset()

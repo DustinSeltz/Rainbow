@@ -15,7 +15,7 @@ from env import Env
 from memory import ReplayMemory
 from test import test
 
-
+print("TESTING")
 # Note that hyperparameters may originally be reported in ATARI game frames instead of agent steps
 parser = argparse.ArgumentParser(description='Rainbow')
 parser.add_argument('--id', type=str, default='default', help='Experiment ID')
@@ -24,7 +24,8 @@ parser.add_argument('--disable-cuda', action='store_true', help='Disable CUDA')
 #parser.add_argument('--game', type=str, default='space_invaders', choices=atari_py.list_games(), help='ATARI game')
 parser.add_argument('--T-max', type=int, default=int(50e6), metavar='STEPS', help='Number of training steps (4x number of frames)')
 parser.add_argument('--max-episode-length', type=int, default=int(108e3), metavar='LENGTH', help='Max episode length in game frames (0 to disable)')
-#parser.add_argument('--history-length', type=int, default=4, metavar='T', help='Number of consecutive states processed')
+#edited because our environment behaves poorly with history.
+parser.add_argument('--history-length', type=int, default=1, metavar='T', help='Number of consecutive states processed')
 parser.add_argument('--architecture', type=str, default='canonical', choices=['canonical', 'data-efficient'], metavar='ARCH', help='Network architecture')
 parser.add_argument('--hidden-size', type=int, default=512, metavar='SIZE', help='Network hidden size')
 parser.add_argument('--noisy-std', type=float, default=0.1, metavar='σ', help='Initial standard deviation of noisy linear layers')
@@ -55,6 +56,7 @@ parser.add_argument('--checkpoint-interval', default=0, help='How often to check
 parser.add_argument('--memory', help='Path to save/load the memory from')
 parser.add_argument('--disable-bzip-memory', action='store_true', help='Don\'t zip the memory file. Not recommended (zipping is a bit slower and much, much smaller)')
 
+print("AHHHHHH", flush = True)
 # Setup
 args = parser.parse_args()
 
@@ -142,6 +144,7 @@ else:
   dqn.train()
   T, done = 0, True
   for T in trange(1, args.T_max + 1):
+#    print(f'Loop is running {T}')
     if done:
       state, done = env.reset(), False
 
@@ -156,29 +159,32 @@ else:
 
     # Train and test
     if T >= args.learn_start:
+      print("point 1", flush = True)
       mem.priority_weight = min(mem.priority_weight + priority_weight_increase, 1)  # Anneal importance sampling weight β to 1
-
+      print("point 2", flush = True)
       if T % args.replay_frequency == 0:
         dqn.learn(mem)  # Train with n-step distributional double-Q learning
-
+      print("point 3", flush = True)
       if T % args.evaluation_interval == 0:
         dqn.eval()  # Set DQN (online network) to evaluation mode
+        print("point 3.5", flush = True)
         avg_reward, avg_Q = test(args, T, dqn, val_mem, metrics, results_dir)  # Test
+        print("point3.75", flush = True)
         log('T = ' + str(T) + ' / ' + str(args.T_max) + ' | Avg. reward: ' + str(avg_reward) + ' | Avg. Q: ' + str(avg_Q))
         dqn.train()  # Set DQN (online network) back to training mode
-
+        print("point 4", flush = True)
         # If memory path provided, save it
         if args.memory is not None:
           save_memory(mem, args.memory, args.disable_bzip_memory)
-
+      print("point 5", flush = True)
       # Update target network
       if T % args.target_update == 0:
         dqn.update_target_net()
-
+      print("point 6", flush = True)
       # Checkpoint the network
       if (args.checkpoint_interval != 0) and (T % args.checkpoint_interval == 0):
         dqn.save(results_dir, 'checkpoint.pth')
-
+      print("point 7", flush = True)		
     state = next_state
 
 env.close()
