@@ -66,8 +66,8 @@ class Env():
 
   def action_space(self):
     return len(self.actions)
-  def render(): #modified for safety environment
-    pass
+  def render(self): #modified for safety environment
+    print("Render TODO") #Can reach here using --render --evaluate
   def close(self):
     #cv2.destroyAllWindows()
     self.grid.reset()
