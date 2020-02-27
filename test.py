@@ -19,10 +19,11 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
   # Test performance over several episodes
   done = True
   for _ in range(args.evaluation_episodes):
+    print("outer infinite loop", flush = True);
     while True:
       if done:
         state, reward_sum, done = env.reset(), 0, False
-      print("Infinite Loop?", flush = True)
+      print("Inner infinite Loop?", flush = True)
       action = dqn.act_e_greedy(state)  # Choose an action ε-greedily
       state, reward, done = env.step(action)  # Step
       reward_sum += reward

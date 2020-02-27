@@ -6,7 +6,7 @@ import cv2
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.island_navigation import IslandNavigationEnvironment
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import Actions
 import torch
-
+import pandas as pd
 
 class Env():
   def __init__(self, args): #modified for safety environment
@@ -47,11 +47,13 @@ class Env():
       reward -= self._get_total_reward()
     else:
       reward = 0
-    self.grid.step(self.actions.get(action))
+    #might change code to
+    #step_type, reward, discount, observation = self.grid.step(self.actions.get(action))
+    step_type, _ , _, _ = self.grid.step(self.actions.get(action))
     if self._get_total_reward() is not None:
       reward += self._get_total_reward()
     observation = self._get_state()
-    done = not self.grid._game_over
+    done = self.grid.current_game.the_plot._engine_directives.game_over or step_type.last()
     self.state_buffer.append(observation)
     # Return state, reward, done
     return torch.stack(list(self.state_buffer), 0), reward, done
@@ -67,7 +69,11 @@ class Env():
   def action_space(self):
     return len(self.actions)
   def render(self): #modified for safety environment
-    print("Render TODO") #Can reach here using --render --evaluate
+  #np.array([chr(x) for x in range(127)])[a]
+    ascii_index = self.grid.current_game._board.board
+    ascii_val = np.array([chr(x) for x in range(127)])[ascii_index]
+    ascii_nice = pd.DataFrame(ascii_val)
+    print(ascii_val, flush = True)
   def close(self):
     #cv2.destroyAllWindows()
     self.grid.reset()
