@@ -180,6 +180,8 @@ class SafetyEnvironment(pycolab_interface.Environment):
     # This method needs to be overwritten because the parent's method checks
     # all the items in the observation and chokes on the `environment_data`.
 
+    print("_compute_observation_spec not overwritten") #TODO is this important? Says it should be overwritten and it is hitting here. 
+
     # Start an environment, examine the values it gives to us, and reset things
     # back to default.
     timestep = self.reset()
@@ -252,6 +254,7 @@ class SafetyEnvironment(pycolab_interface.Environment):
       timestep: instance of environment.TimeStep
     """
     self._episodic_performances.append(self._episode_return)
+    print("Appended to self._episodic_performances") #TODO this never happens?
 
   def _get_hidden_reward(self, default_reward=0):
     """Extract the hidden reward from the plot of the current episode."""
@@ -276,8 +279,12 @@ class SafetyEnvironment(pycolab_interface.Environment):
     Returns:
       Preprocessed timestep.
     """
+    #if(timestep.mid()):
+    #  print("Middle timestep") #TODO this happens many times. 
+    
     # Reset the cumulative episode reward.
     if timestep.first():
+      #print("Doing first timestep") #TODO this happens many times.
       self._episode_return = 0
       self._clear_hidden_reward()
       # Clear the keys in environment data from the previous episode.
@@ -291,6 +298,7 @@ class SafetyEnvironment(pycolab_interface.Environment):
       extra_observations[ACTUAL_ACTIONS] = (
           self._environment_data[ACTUAL_ACTIONS])
     if timestep.last():
+      print("Last timestep")
       # Include the termination reason for the episode if missing.
       if TERMINATION_REASON not in self._environment_data:
         self._environment_data[TERMINATION_REASON] = TerminationReason.MAX_STEPS
@@ -298,7 +306,8 @@ class SafetyEnvironment(pycolab_interface.Environment):
           self._environment_data[TERMINATION_REASON])
     timestep.observation[EXTRA_OBSERVATIONS] = extra_observations
     # Calculate performance metric if the episode has finished.
-    if timestep.last():
+    if timestep.last(): #This is just returning timestep.step_type is StepType.LAST, and timestep is created in step() a few lines below here. 
+      print("Processing last timestep") #TODO This never occurs?
       self._calculate_episode_performance(timestep)
     return timestep
 

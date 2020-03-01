@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.island_navigation import IslandNavigationEnvironment
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import Actions
+from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import SafetyEnvironment
 import torch
 
 
@@ -47,6 +48,7 @@ class Env():
       reward -= self._get_total_reward()
     else:
       reward = 0
+    #print(self.actions.get(action)) #This shows which direction it's moving in. 
     self.grid.step(self.actions.get(action))
     if self._get_total_reward() is not None:
       reward += self._get_total_reward()
@@ -68,6 +70,10 @@ class Env():
     return len(self.actions)
   def render(self): #modified for safety environment
     print("Render TODO") #Can reach here using --render --evaluate
+    #See safety_game.py in Rainbow\ai_safety_gridworlds\ai_safety_gridworlds\environments\shared 
+    print("Overall performance:", self.grid.get_overall_performance()) #Okay, this prints None, the default value. So we're never modifying _calculate_overall_performance?
+    print("Some hidden reward:", self.grid._get_hidden_reward()) #And this is all -1.
+    #TODO render ASCII art of board
   def close(self):
     #cv2.destroyAllWindows()
     self.grid.reset()

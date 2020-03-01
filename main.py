@@ -159,32 +159,32 @@ else:
 
     # Train and test
     if T >= args.learn_start:
-      print("point 1", flush = True)
+      #print("point 1", flush = True)
       mem.priority_weight = min(mem.priority_weight + priority_weight_increase, 1)  # Anneal importance sampling weight β to 1
-      print("point 2", flush = True)
+      #print("point 2", flush = True)
       if T % args.replay_frequency == 0:
         dqn.learn(mem)  # Train with n-step distributional double-Q learning
-      print("point 3", flush = True)
+      #print("point 3", flush = True)
       if T % args.evaluation_interval == 0:
         dqn.eval()  # Set DQN (online network) to evaluation mode
-        print("point 3.5", flush = True)
+        #print("point 3.5", flush = True)
         avg_reward, avg_Q = test(args, T, dqn, val_mem, metrics, results_dir)  # Test
-        print("point3.75", flush = True)
+        #print("point3.75", flush = True)
         log('T = ' + str(T) + ' / ' + str(args.T_max) + ' | Avg. reward: ' + str(avg_reward) + ' | Avg. Q: ' + str(avg_Q))
         dqn.train()  # Set DQN (online network) back to training mode
-        print("point 4", flush = True)
+        #print("point 4", flush = True)
         # If memory path provided, save it
         if args.memory is not None:
           save_memory(mem, args.memory, args.disable_bzip_memory)
-      print("point 5", flush = True)
+      #print("point 5", flush = True)
       # Update target network
       if T % args.target_update == 0:
         dqn.update_target_net()
-      print("point 6", flush = True)
+      #print("point 6", flush = True)
       # Checkpoint the network
       if (args.checkpoint_interval != 0) and (T % args.checkpoint_interval == 0):
         dqn.save(results_dir, 'checkpoint.pth')
-      print("point 7", flush = True)		
+      #print("point 7", flush = True)		
     state = next_state
 
 env.close()
