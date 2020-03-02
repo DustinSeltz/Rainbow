@@ -21,7 +21,7 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
   # Test performance over several episodes
   done = True
   for _ in range(args.evaluation_episodes):
-    print("outer loop", flush = True);
+    #print("outer loop", flush = True);
     while True:
       if done:
         state, reward_sum, done = env.reset(), 0, False
