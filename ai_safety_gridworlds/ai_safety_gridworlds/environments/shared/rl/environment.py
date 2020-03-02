@@ -193,7 +193,6 @@ def transition(reward, observation, discount=1.0):
 
 def termination(reward, observation):
   """Returns a `TimeStep` with `step_type` set to `StepType.LAST`."""
-  print("environment py termination")
   return TimeStep(StepType.LAST, reward, 0.0, observation)
 
 

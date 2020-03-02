@@ -253,8 +253,8 @@ class SafetyEnvironment(pycolab_interface.Environment):
     Args:
       timestep: instance of environment.TimeStep
     """
-    print("Appended to self._episodic_performances", flush=True) #TODO this never happens? Or the print's failing?
     self._episodic_performances.append(self._episode_return)
+    print("Appended to self._episodic_performances") #TODO this never happens?
 
   def _get_hidden_reward(self, default_reward=0):
     """Extract the hidden reward from the plot of the current episode."""
@@ -298,7 +298,7 @@ class SafetyEnvironment(pycolab_interface.Environment):
       extra_observations[ACTUAL_ACTIONS] = (
           self._environment_data[ACTUAL_ACTIONS])
     if timestep.last():
-      # print("Last timestep")
+      print("Last timestep")
       # Include the termination reason for the episode if missing.
       if TERMINATION_REASON not in self._environment_data:
         self._environment_data[TERMINATION_REASON] = TerminationReason.MAX_STEPS
@@ -307,7 +307,7 @@ class SafetyEnvironment(pycolab_interface.Environment):
     timestep.observation[EXTRA_OBSERVATIONS] = extra_observations
     # Calculate performance metric if the episode has finished.
     if timestep.last(): #This is just returning timestep.step_type is StepType.LAST, and timestep is created in step() a few lines below here. 
-      print("Processing last timestep")
+      print("Processing last timestep") #TODO This never occurs?
       self._calculate_episode_performance(timestep)
     return timestep
 
@@ -602,23 +602,6 @@ def timestep_termination_reason(timestep, default=None):
   return timestep.observation[EXTRA_OBSERVATIONS].get(
       TERMINATION_REASON, default)
 
-#TODO import these pseudo-constants and clean this whole thing up
-WATER_REWARD = -50
-FINAL_REWARD = 50
-#These can be whatever
-WATER_KEY = "water"
-FINAL_KEY = "goal"
-timesHit = dict()
-def printTimesHitWater():
-  numTimes = 0
-  if(WATER_KEY in timesHit):
-    numTimes = timesHit[WATER_KEY]
-  print("Hit", WATER_KEY, numTimes, "times")
-def printTimesHitGoal():
-  numTimes = 0
-  if(FINAL_KEY in timesHit):
-    numTimes = timesHit[FINAL_KEY]
-  print("Hit", FINAL_KEY, numTimes, "times")
 
 def add_hidden_reward(the_plot, reward, default=0):
   """Adds a hidden reward, analogous to pycolab add_reward.
@@ -628,27 +611,8 @@ def add_hidden_reward(the_plot, reward, default=0):
      reward: numeric value of the hidden reward.
      default: value with which to initialize the hidden reward variable.
   """
-  if(reward == WATER_REWARD):
-    #timesHitWater += 1
-    if(WATER_KEY in timesHit):
-      timesHit[WATER_KEY] += 1
-    else:
-      timesHit[WATER_KEY] = 0
-  elif(reward == FINAL_REWARD):
-    #timesHitGoal += 1
-    if(FINAL_KEY in timesHit):
-      timesHit[FINAL_KEY] += 1
-    else:
-      timesHit[FINAL_KEY] = 0
   the_plot[HIDDEN_REWARD] = the_plot.get(HIDDEN_REWARD, default) + reward
 
-
-terminations = dict()
-def printTerminations():
-  for reason in terminations:
-    print(reason, terminations[reason])
-  printTimesHitWater()
-  printTimesHitGoal()
 
 def terminate_episode(the_plot, environment_data,
                       reason=TerminationReason.TERMINATED, discount=0.0):
@@ -661,13 +625,6 @@ def terminate_episode(the_plot, environment_data,
     discount: discount for the last observation.
   """
   environment_data[TERMINATION_REASON] = reason
-  #print("Terminated episode because", reason, flush=True)
-  if(reason in terminations):
-    terminations[reason] += 1
-  else:
-    #Initialize
-    terminations[reason] = 0
-  
   the_plot.terminate_episode(discount=discount)
 
 

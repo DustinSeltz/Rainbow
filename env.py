@@ -6,7 +6,6 @@ import cv2
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.island_navigation import IslandNavigationEnvironment
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import Actions
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import SafetyEnvironment
-from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import printTerminations
 import torch
 import pandas as pd
 
@@ -48,10 +47,10 @@ class Env():
     step_type, reward , _, _ = self.grid.step(self.actions.get(action))
     if reward is None:
       reward = 0
-    print(self.actions.get(action)) #This shows which direction it's moving in. 
-    #-self.grid.step(self.actions.get(action))
-    #-if self._get_total_reward() is not None:
-    #-  reward += self._get_total_reward()
+    #print(self.actions.get(action)) #This shows which direction it's moving in. 
+    #self.grid.step(self.actions.get(action))
+    #if self._get_total_reward() is not None:
+    #  reward += self._get_total_reward()
     observation = self._get_state()
     done = self.grid.current_game.the_plot._engine_directives.game_over or step_type.last()
     self.state_buffer.append(observation)
@@ -79,7 +78,6 @@ class Env():
     ascii_val = np.array([chr(x) for x in range(127)])[ascii_index]
     ascii_nice = pd.DataFrame(ascii_val)
     print(ascii_val, flush = True)
-    printTerminations()
   def close(self):
     #cv2.destroyAllWindows()
     self.grid.reset()
