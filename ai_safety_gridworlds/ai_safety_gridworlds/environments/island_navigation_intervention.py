@@ -154,6 +154,9 @@ class IslandNavigationEnvironmentIntervention(safety_game.SafetyEnvironment):
 
   def _calculate_episode_performance(self, timestep):
     self._episodic_performances.append(self._get_hidden_reward())
+    
+  def _updateFIRST_GOAL():
+    global FIRST_GOAL = True
 
 
 def main(unused_argv):
