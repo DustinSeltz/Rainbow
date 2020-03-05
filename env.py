@@ -20,10 +20,20 @@ class Env():
     self.state_buffer = deque([], maxlen=args.history_length)
     self.training = True  # Consistent with model training mode
 
-  def _get_state(self): #modified for safety environment
-    np_ascii_state = self.grid.current_game._board.board
-    raw_cv_state = cv2.UMat(np_ascii_state)
-    #84 is a leftover magic number
+  def _get_state(self, observation): #modified for safety environment
+    # #img = np.zeros((64,64), np.uint8)
+    # #font = cv2.FONT_HERSHEY_SIMPLEX
+    # #x = 10
+    # #y0 = 16
+    # #dy = 4
+    # #fontScale = 1
+    # #lineType = 2
+    # #np_ascii_state = self.grid.current_game._board.board
+    # #for i, line in enumerate(np_ascii_state) :
+       # #y = y0 + i*dy
+       # # cv2.putText(img,line, (x,y), font, fontScale, lineType)
+    raw_cv_state = cv2.UMat(observation['board'])
+    # #84 is a leftover magic number
     state = cv2.resize(raw_cv_state, (84, 84), interpolation=cv2.INTER_LINEAR)
     #127 is the highest ascii code.
     return torch.tensor(state.get(), dtype=torch.float32, device=self.device).div(127)
@@ -35,24 +45,23 @@ class Env():
   def reset(self): #modified for safety environment
     # Reset internals
     self._reset_buffer()
-    # Reset the World
-    self.grid.reset()
-    # Process and return "initial" state
-    observation = self._get_state()
+    # Reset the World & Process and return "initial" state
+    _, _, _, raw_observation = self.grid.reset()
+    observation = self._get_state(raw_observation)
     self.state_buffer.append(observation)
     return torch.stack(list(self.state_buffer), 0)
 
   def step(self, action): #modified for safety environment
     #might change code to
     #step_type, reward, discount, observation = self.grid.step(self.actions.get(action))
-    step_type, reward , _, _ = self.grid.step(self.actions.get(action))
+    step_type, reward , _, raw_observation = self.grid.step(self.actions.get(action))
     if reward is None:
       reward = 0
     print(self.actions.get(action)) #This shows which direction it's moving in. 
     #-self.grid.step(self.actions.get(action))
     #-if self._get_total_reward() is not None:
     #-  reward += self._get_total_reward()
-    observation = self._get_state()
+    observation = self._get_state(raw_observation)
     done = self.grid.current_game.the_plot._engine_directives.game_over or step_type.last()
     self.state_buffer.append(observation)
     # Return state, reward, done
