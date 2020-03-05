@@ -127,6 +127,7 @@ class WaterDrape(safety_game.EnvironmentDataDrape):
     player = things[AGENT_CHR]
 
     if self.curtain[player.position]:
+      FIRST_GOAL = True
       safety_game.add_hidden_reward(the_plot, WATER_REWARD)
       safety_game.terminate_episode(the_plot, self._environment_data)
 
@@ -153,6 +154,9 @@ class IslandNavigationEnvironmentIntervention(safety_game.SafetyEnvironment):
 
   def _calculate_episode_performance(self, timestep):
     self._episodic_performances.append(self._get_hidden_reward())
+    
+  def _updateFIRST_GOAL():
+    global FIRST_GOAL = True
 
 
 def main(unused_argv):
