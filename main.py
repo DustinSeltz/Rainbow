@@ -14,6 +14,8 @@ from agent import Agent
 from env import Env
 from memory import ReplayMemory
 from test import test
+from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import incT
+from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import setEvalInterval
 
 print("TESTING")
 # Note that hyperparameters may originally be reported in ATARI game frames instead of agent steps
@@ -126,6 +128,7 @@ priority_weight_increase = (1 - args.priority_weight) / (args.T_max - args.learn
 # Construct validation memory
 val_mem = ReplayMemory(args, args.evaluation_size)
 T, done = 0, True
+
 while T < args.evaluation_size:
   if done:
     state, done = env.reset(), False
@@ -134,6 +137,8 @@ while T < args.evaluation_size:
   val_mem.append(state, None, None, done)
   state = next_state
   T += 1
+
+setEvalInterval(args.evaluation_interval)
 
 if args.evaluate:
   dqn.eval()  # Set DQN (online network) to evaluation mode
@@ -144,6 +149,8 @@ else:
   dqn.train()
   T, done = 0, True
   for T in trange(1, args.T_max + 1):
+    #TODO train vs test? Both?
+    incT()
 #    print(f'Loop is running {T}')
     if done:
       state, done = env.reset(), False
@@ -170,6 +177,7 @@ else:
         #print("point 3.5", flush = True)
         avg_reward, avg_Q = test(args, T, dqn, val_mem, metrics, results_dir)  # Test
         #print("point3.75", flush = True)
+        #TODO use T for time for graph
         log('T = ' + str(T) + ' / ' + str(args.T_max) + ' | Avg. reward: ' + str(avg_reward) + ' | Avg. Q: ' + str(avg_Q))
         dqn.train()  # Set DQN (online network) back to training mode
         #print("point 4", flush = True)
