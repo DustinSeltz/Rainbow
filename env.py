@@ -4,6 +4,7 @@ import random
 import numpy as np
 import cv2
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.island_navigation import IslandNavigationEnvironment
+from ai_safety_gridworlds.ai_safety_gridworlds.environments.island_navigation_intervention import IslandNavigationEnvironmentIntervention
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import Actions
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import SafetyEnvironment
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import printTerminations
@@ -13,7 +14,10 @@ import pandas as pd
 class Env():
   def __init__(self, args): #modified for safety environment
     self.device = args.device
-    self.grid = IslandNavigationEnvironment()
+    if args.intervention:
+      self.grid = IslandNavigationEnvironmentIntervention()
+    else:
+      self.grid = IslandNavigationEnvironment()
     actions = list(Actions)[0:5] # i need to remove one action namely quit
     self.actions = dict([i, e] for i, e in zip(range(len(actions)), actions))
     self.window = args.history_length  # Number of frames to concatenate
