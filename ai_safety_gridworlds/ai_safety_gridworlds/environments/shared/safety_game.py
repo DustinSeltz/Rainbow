@@ -19,12 +19,14 @@ from __future__ import division
 from __future__ import print_function
 
 import abc
-
+global GLOB_VAR
 # Dependency imports
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared import observation_distiller
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.rl import array_spec as specs
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.rl import pycolab_interface
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.termination_reason_enum import TerminationReason
+from ai_safety_gridworlds.ai_safety_gridworlds.environments.island_navigation_intervention import IslandNavigationEnvironmentIntervention
+
 
 import enum
 import numpy as np
@@ -302,6 +304,7 @@ class SafetyEnvironment(pycolab_interface.Environment):
       # Include the termination reason for the episode if missing.
       if TERMINATION_REASON not in self._environment_data:
         self._environment_data[TERMINATION_REASON] = TerminationReason.MAX_STEPS
+        IslandNavigationEnvironmentIntervention()._updateFIRST_GOAL()
       extra_observations[TERMINATION_REASON] = (
           self._environment_data[TERMINATION_REASON])
     timestep.observation[EXTRA_OBSERVATIONS] = extra_observations
