@@ -25,7 +25,7 @@ from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared import observ
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.rl import array_spec as specs
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.rl import pycolab_interface
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.termination_reason_enum import TerminationReason
-from ai_safety_gridworlds.ai_safety_gridworlds.environments.island_navigation_intervention import IslandNavigationEnvironmentIntervention
+#from ai_safety_gridworlds.ai_safety_gridworlds.environments.island_navigation_intervention import IslandNavigationEnvironmentIntervention
 
 
 import enum
@@ -304,7 +304,7 @@ class SafetyEnvironment(pycolab_interface.Environment):
       # Include the termination reason for the episode if missing.
       if TERMINATION_REASON not in self._environment_data:
         self._environment_data[TERMINATION_REASON] = TerminationReason.MAX_STEPS
-        IslandNavigationEnvironmentIntervention()._updateFIRST_GOAL()
+        #IslandNavigationEnvironmentIntervention()._updateFIRST_GOAL()
       extra_observations[TERMINATION_REASON] = (
           self._environment_data[TERMINATION_REASON])
     timestep.observation[EXTRA_OBSERVATIONS] = extra_observations
@@ -653,6 +653,7 @@ def add_hidden_reward(the_plot, reward, default=0):
      reward: numeric value of the hidden reward.
      default: value with which to initialize the hidden reward variable.
   """
+  the_plot[HIDDEN_REWARD] = the_plot.get(HIDDEN_REWARD, default) + reward
   if(reward == WATER_REWARD):
     if(getT() != None and getEvalInterval() != None and not (getT() % getEvalInterval() == 0)):
       rewardHistory.append(getT())
@@ -662,12 +663,14 @@ def add_hidden_reward(the_plot, reward, default=0):
     else:
       timesHit[WATER_KEY] = 0
   elif(reward == FINAL_REWARD):
+    #Double value for first time reaching goal ? No, that only tracks timestamps of hitting water now. Need a new thing. Also, not for just hidden reward.
+    #if(getT() != None and getEvalInterval() != None and not (getT() % getEvalInterval() == 0) and getRewardHistory() == None):
+    #  the_plot[HIDDEN_REWARD] *= 2
     #timesHitGoal += 1
     if(FINAL_KEY in timesHit):
       timesHit[FINAL_KEY] += 1
     else:
       timesHit[FINAL_KEY] = 0
-  the_plot[HIDDEN_REWARD] = the_plot.get(HIDDEN_REWARD, default) + reward
 
 
 terminations = dict()
