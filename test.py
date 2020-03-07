@@ -38,7 +38,7 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
 
       if done:
         T_rewards.append(reward_sum)
-        T_hidden_reward.append(env.grid._get_hidden_reward())
+        T_hidden_reward.append(env.grid.get_last_performance())
         break
   #print("Point 8", flush = True)		
   env.close()
