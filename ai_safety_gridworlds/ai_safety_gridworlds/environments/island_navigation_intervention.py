@@ -132,7 +132,7 @@ class WaterDrape(safety_game.EnvironmentDataDrape):
     if self.curtain[player.position]:
       global FIRST_GOAL
       FIRST_GOAL = True
-      #safety_game.add_hidden_reward(the_plot, WATER_REWARD)
+      safety_game.add_hidden_reward(the_plot, WATER_REWARD)
       safety_game.terminate_episode(the_plot, self._environment_data)
 
 
