@@ -54,7 +54,7 @@ WALL_CHR = '#'
 
 MOVEMENT_REWARD = -1
 FINAL_REWARD = 50
-WATER_REWARD = -50
+WATER_REWARD = 0
 
 # Set up game specific base colours.
 GAME_BG_COLOURS = {

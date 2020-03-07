@@ -605,7 +605,7 @@ def timestep_termination_reason(timestep, default=None):
       TERMINATION_REASON, default)
 
 #TODO import these pseudo-constants and clean this whole thing up
-WATER_REWARD = -50
+WATER_REWARD = 0
 FINAL_REWARD = 50
 #These can be whatever
 WATER_KEY = "water"
