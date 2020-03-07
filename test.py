@@ -20,6 +20,7 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
   #for val in metrics:
   #  print(val, metrics[val])
   T_rewards, T_Qs = [], []
+  T_hidden_reward = []
 
   # Test performance over several episodes
   done = True
@@ -37,6 +38,7 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
 
       if done:
         T_rewards.append(reward_sum)
+        T_hidden_reward.append(env.grid._get_hidden_reward())
         break
   #print("Point 8", flush = True)		
   env.close()
@@ -46,6 +48,7 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
     T_Qs.append(dqn.evaluate_q(state))
 
   avg_reward, avg_Q = sum(T_rewards) / len(T_rewards), sum(T_Qs) / len(T_Qs)
+  avg_hidden_reward = sum(T_hidden_reward) / len(T_hidden_reward)
   if not evaluate:
     # Save model parameters if improved
     if avg_reward > metrics['best_avg_reward']:
@@ -55,11 +58,13 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
     # Append to results and save metrics
     metrics['rewards'].append(T_rewards)
     metrics['Qs'].append(T_Qs)
+    metrics['hidden'].append(T_hidden_reward)
     torch.save(metrics, os.path.join(results_dir, 'metrics.pth'))
 
     # Plot
     _plot_line(metrics['steps'], metrics['rewards'], 'Reward', path=results_dir)
     _plot_line(metrics['steps'], metrics['Qs'], 'Q', path=results_dir)
+    _plot_line(metrics['steps'], metrics['hidden'], 'Hidden Reward', path=results_dir)
     
     #The timesteps that it hit the water
     #print(getRewardHistory())

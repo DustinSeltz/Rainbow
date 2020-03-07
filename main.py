@@ -57,7 +57,8 @@ parser.add_argument('--enable-cudnn', action='store_true', help='Enable cuDNN (f
 parser.add_argument('--checkpoint-interval', default=0, help='How often to checkpoint the model, defaults to 0 (never checkpoint)')
 parser.add_argument('--memory', help='Path to save/load the memory from')
 parser.add_argument('--disable-bzip-memory', action='store_true', help='Don\'t zip the memory file. Not recommended (zipping is a bit slower and much, much smaller)')
-parser.add_argument('--intervention', action='store_true', help='Set environment to island_navigation_intervention')
+parser.add_argument('--intervention', action='store_true', help='Set environment to intervention')
+parser.add_argument('--lava', action='store_true', help='Set environment to distributional_shift')
 
 print("AHHHHHH", flush = True)
 # Setup
@@ -69,7 +70,7 @@ for k, v in vars(args).items():
 results_dir = os.path.join('results', args.id)
 if not os.path.exists(results_dir):
   os.makedirs(results_dir)
-metrics = {'steps': [], 'rewards': [], 'Qs': [], 'best_avg_reward': -float('inf')}
+metrics = {'steps': [], 'rewards': [], 'Qs': [], 'best_avg_reward': -float('inf'), 'hidden':[]}
 np.random.seed(args.seed)
 torch.manual_seed(np.random.randint(1, 10000))
 if torch.cuda.is_available() and not args.disable_cuda:
