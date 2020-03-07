@@ -71,9 +71,8 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
     #Plot times in water vs steps
     xaxis = getRewardHistory()
     yaxis = [i for i in range(1, len(xaxis) + 1)]
-    if(len(xaxis) > 0){
-        _plot_water(xaxis, yaxis, "Steps vs Water", path=results_dir)
-    }
+    if(len(xaxis) > 0):
+      _plot_water(xaxis, yaxis, "Steps vs Water", path=results_dir)
     #Plot ...
     printTerminations()
 
