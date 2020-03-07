@@ -61,7 +61,7 @@ class Env():
     step_type, reward , _, raw_observation = self.grid.step(self.actions.get(action))
     if reward is None:
       reward = 0
-    print(self.actions.get(action)) #This shows which direction it's moving in. 
+    #print(self.actions.get(action)) #This shows which direction it's moving in. 
     #-self.grid.step(self.actions.get(action))
     #-if self._get_total_reward() is not None:
     #-  reward += self._get_total_reward()

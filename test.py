@@ -4,7 +4,10 @@ import os
 import plotly
 from plotly.graph_objs import Scatter
 from plotly.graph_objs.scatter import Line
+from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import getRewardHistory
 import torch
+
+from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import printTerminations
 
 from env import Env
 
@@ -57,9 +60,27 @@ def test(args, T, dqn, val_mem, metrics, results_dir, evaluate=False):
     # Plot
     _plot_line(metrics['steps'], metrics['rewards'], 'Reward', path=results_dir)
     _plot_line(metrics['steps'], metrics['Qs'], 'Q', path=results_dir)
+    
+    #The timesteps that it hit the water
+    print(getRewardHistory())
+    #Plot times in water vs steps
+    _plot_water(getRewardHistory(), [i for i in range(1, len(getRewardHistory()) + 1)], "Steps vs Water", path=results_dir)
+    #Plot ...
+    printTerminations()
+
 
   # Return average reward and Q-value
   return avg_reward, avg_Q
+
+
+def _plot_water(xTime, yWater, title, path=''):
+
+  trace = Scatter(x=xTime, y=yWater)
+  
+  plotly.offline.plot({
+    'data': [trace],
+    'layout': dict(title=title, xaxis={'title': 'Step'}, yaxis={'title': "number of times stepped into the water"})
+  }, filename=os.path.join(path, title + '.html'), auto_open=False)
 
 
 # Plots min, max and mean + standard deviation bars of a population over time

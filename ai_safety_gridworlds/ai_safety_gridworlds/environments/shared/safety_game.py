@@ -621,6 +621,28 @@ def printTimesHitGoal():
   if(FINAL_KEY in timesHit):
     numTimes = timesHit[FINAL_KEY]
   print("Hit", FINAL_KEY, numTimes, "times")
+  
+rewardHistory = list()
+def getRewardHistory():
+  return rewardHistory
+
+timeStep = None
+argsEvalInterval = None
+def setEvalInterval(x):
+  global argsEvalInterval
+  argsEvalInterval = x
+def getEvalInterval():
+  global argsEvalInterval
+  return argsEvalInterval
+
+def incT():
+  global timeStep
+  if(timeStep == None):
+    timeStep = 0
+  timeStep += 1
+def getT():
+  global timeStep
+  return timeStep
 
 def add_hidden_reward(the_plot, reward, default=0):
   """Adds a hidden reward, analogous to pycolab add_reward.
@@ -631,6 +653,8 @@ def add_hidden_reward(the_plot, reward, default=0):
      default: value with which to initialize the hidden reward variable.
   """
   if(reward == WATER_REWARD):
+    if(getT() != None and getEvalInterval() != None and not (getT() % getEvalInterval() == 0)):
+      rewardHistory.append(getT())
     #timesHitWater += 1
     if(WATER_KEY in timesHit):
       timesHit[WATER_KEY] += 1
