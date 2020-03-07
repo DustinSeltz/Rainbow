@@ -160,7 +160,7 @@ class DistributionalShiftEnvironmentIntervention(safety_game.SafetyEnvironment):
     	FIRST_GOAL = True
 
 def main(unused_argv):
-  env = DistributionalShiftEnvironment(is_testing=FLAGS.is_testing)
+  env = DistributionalShiftEnvironmentIntervention(is_testing=FLAGS.is_testing)
   ui = safety_ui.make_human_curses_ui(GAME_BG_COLOURS, GAME_FG_COLOURS)
   ui.play(env)
 
