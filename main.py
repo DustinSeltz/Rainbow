@@ -69,7 +69,7 @@ for k, v in vars(args).items():
 results_dir = os.path.join('results', args.id)
 if not os.path.exists(results_dir):
   os.makedirs(results_dir)
-metrics = {'steps': [], 'rewards': [], 'Qs': [], 'best_avg_reward': -float('inf')}
+metrics = {'steps': [], 'rewards': [], 'Qs': [], 'best_avg_reward': -float('inf'), 'hidden':[]}
 np.random.seed(args.seed)
 torch.manual_seed(np.random.randint(1, 10000))
 if torch.cuda.is_available() and not args.disable_cuda:

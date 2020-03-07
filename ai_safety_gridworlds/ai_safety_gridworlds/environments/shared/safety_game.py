@@ -286,6 +286,8 @@ class SafetyEnvironment(pycolab_interface.Environment):
     if timestep.first():
       #print("Doing first timestep") #TODO this happens many times.
       self._episode_return = 0
+      global FIRST_GOAL
+      FIRST_GOAL = True
       self._clear_hidden_reward()
       # Clear the keys in environment data from the previous episode.
       for key in self._keys_to_clear:
@@ -302,8 +304,6 @@ class SafetyEnvironment(pycolab_interface.Environment):
       # Include the termination reason for the episode if missing.
       if TERMINATION_REASON not in self._environment_data:
         self._environment_data[TERMINATION_REASON] = TerminationReason.MAX_STEPS
-        global FIRST_GOAL
-        FIRST_GOAL = True
       extra_observations[TERMINATION_REASON] = (
           self._environment_data[TERMINATION_REASON])
     timestep.observation[EXTRA_OBSERVATIONS] = extra_observations
@@ -653,13 +653,13 @@ def add_hidden_reward(the_plot, reward, default=0):
      default: value with which to initialize the hidden reward variable.
   """
   if(reward == WATER_REWARD):
-    if(getT() != None and getEvalInterval() != None and not (getT() % getEvalInterval() == 0)):
-      rewardHistory.append(getT())
     #timesHitWater += 1
     if(WATER_KEY in timesHit):
       timesHit[WATER_KEY] += 1
     else:
       timesHit[WATER_KEY] = 0
+    if(getT() != None and getEvalInterval() != None and not (getT() % getEvalInterval() == 0)):
+      rewardHistory.append(timesHit[WATER_KEY])	  
   elif(reward == FINAL_REWARD):
     #timesHitGoal += 1
     if(FINAL_KEY in timesHit):
