@@ -106,8 +106,8 @@ def _plot_line(xs, ys_population, title, path=''):
   trace_lower = Scatter(x=xs, y=ys_lower.numpy(), fill='tonexty', fillcolor=std_colour, line=Line(color=transparent), name='-1 Std. Dev.', showlegend=False)
   trace_min = Scatter(x=xs, y=ys_min.numpy(), line=Line(color=max_colour, dash='dash'), name='Min')
 
-  Y_MAX = 1000
-  Y_MIN = -1000
+  Y_MAX = 300
+  Y_MIN = -300
 
   plotly.offline.plot({
     'data': [trace_upper, trace_mean, trace_lower, trace_min, trace_max],
