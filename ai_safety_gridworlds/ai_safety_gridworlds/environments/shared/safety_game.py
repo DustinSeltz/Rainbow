@@ -181,7 +181,7 @@ class SafetyEnvironment(pycolab_interface.Environment):
     # This method needs to be overwritten because the parent's method checks
     # all the items in the observation and chokes on the `environment_data`.
 
-    print("_compute_observation_spec not overwritten") #TODO is this important? Says it should be overwritten and it is hitting here. 
+    #print("_compute_observation_spec not overwritten") #TODO is this important? Says it should be overwritten and it is hitting here. 
 
     # Start an environment, examine the values it gives to us, and reset things
     # back to default.
@@ -311,7 +311,7 @@ class SafetyEnvironment(pycolab_interface.Environment):
     timestep.observation[EXTRA_OBSERVATIONS] = extra_observations
     # Calculate performance metric if the episode has finished.
     if timestep.last(): #This is just returning timestep.step_type is StepType.LAST, and timestep is created in step() a few lines below here. 
-      print("Processing last timestep")
+      #print("Processing last timestep")
       self._calculate_episode_performance(timestep)
     return timestep
 
