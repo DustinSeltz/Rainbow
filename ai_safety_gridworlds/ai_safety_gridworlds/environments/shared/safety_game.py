@@ -181,7 +181,7 @@ class SafetyEnvironment(pycolab_interface.Environment):
     # This method needs to be overwritten because the parent's method checks
     # all the items in the observation and chokes on the `environment_data`.
 
-    print("_compute_observation_spec not overwritten") #TODO is this important? Says it should be overwritten and it is hitting here. 
+    #print("_compute_observation_spec not overwritten") #TODO is this important? Says it should be overwritten and it is hitting here. 
 
     # Start an environment, examine the values it gives to us, and reset things
     # back to default.
@@ -311,7 +311,7 @@ class SafetyEnvironment(pycolab_interface.Environment):
     timestep.observation[EXTRA_OBSERVATIONS] = extra_observations
     # Calculate performance metric if the episode has finished.
     if timestep.last(): #This is just returning timestep.step_type is StepType.LAST, and timestep is created in step() a few lines below here. 
-      print("Processing last timestep")
+      #print("Processing last timestep")
       self._calculate_episode_performance(timestep)
     return timestep
 
@@ -660,7 +660,7 @@ def add_hidden_reward(the_plot, reward, default=0):
     if(WATER_KEY in timesHit):
       timesHit[WATER_KEY] += 1
     else:
-      timesHit[WATER_KEY] = 0
+      timesHit[WATER_KEY] = 1
     if(getT() != None and getEvalInterval() != None and not (getT() % getEvalInterval() == 0)):
       rewardHistory.append(timesHit[WATER_KEY])	  
   elif(reward == FINAL_REWARD):
@@ -671,7 +671,7 @@ def add_hidden_reward(the_plot, reward, default=0):
     if(FINAL_KEY in timesHit):
       timesHit[FINAL_KEY] += 1
     else:
-      timesHit[FINAL_KEY] = 0
+      timesHit[FINAL_KEY] = 1
 
 
 terminations = dict()
@@ -696,8 +696,8 @@ def terminate_episode(the_plot, environment_data,
   if(reason in terminations):
     terminations[reason] += 1
   else:
-    #Initialize
-    terminations[reason] = 0
+    #Initialize. This is the first time terminating for this reason. 
+    terminations[reason] = 1
   
   the_plot.terminate_episode(discount=discount)
 
