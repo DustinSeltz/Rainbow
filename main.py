@@ -17,7 +17,6 @@ from test import test
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import incT
 from ai_safety_gridworlds.ai_safety_gridworlds.environments.shared.safety_game import setEvalInterval
 
-print("TESTING")
 # Note that hyperparameters may originally be reported in ATARI game frames instead of agent steps
 parser = argparse.ArgumentParser(description='Rainbow')
 parser.add_argument('--id', type=str, default='default', help='Experiment ID')
@@ -60,7 +59,6 @@ parser.add_argument('--disable-bzip-memory', action='store_true', help='Don\'t z
 parser.add_argument('--intervention', action='store_true', help='Set environment to intervention')
 parser.add_argument('--lava', action='store_true', help='Set environment to distributional_shift')
 
-print("AHHHHHH", flush = True)
 # Setup
 args = parser.parse_args()
 
