@@ -87,7 +87,7 @@ def _plot_water(xTime, yWater, title, path=''):
   
   plotly.offline.plot({
     'data': [trace],
-    'layout': dict(title=title, xaxis={'title': 'Step'}, yaxis={'title': "number of times stepped into the water", 'type': "log"})
+    'layout': dict(title=title, xaxis={'title': 'Step'}, yaxis={'title': "number of times stepped into the water"})
     #TODO when the project can compile again, try 'yaxis_type': "log" or similar
   }, filename=os.path.join(path, title + '.html'), auto_open=False)
 
@@ -111,5 +111,5 @@ def _plot_line(xs, ys_population, title, path=''):
 
   plotly.offline.plot({
     'data': [trace_upper, trace_mean, trace_lower, trace_min, trace_max],
-    'layout': dict(title=title, xaxis={'title': 'Step'}, yaxis={'title': title, "range":[Y_MIN, Y_MAX], 'type': "log"})
+    'layout': dict(title=title, xaxis={'title': 'Step'}, yaxis={'title': title, "range":[Y_MIN, Y_MAX]})
   }, filename=os.path.join(path, title + '.html'), auto_open=False)
