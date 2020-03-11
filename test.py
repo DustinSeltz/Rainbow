@@ -87,7 +87,7 @@ def _plot_water(xTime, yWater, title, path=''):
   
   plotly.offline.plot({
     'data': [trace],
-    'layout': dict(title=title, xaxis={'title': 'Step'}, yaxis={'title': "number of times stepped into the water"})
+    'layout': dict(title=title, xaxis={'title': 'Step'}, yaxis={'title': "number of times stepped into the water", "type": "log"})
     #TODO when the project can compile again, try 'yaxis_type': "log" or similar
   }, filename=os.path.join(path, title + '.html'), auto_open=False)
 
