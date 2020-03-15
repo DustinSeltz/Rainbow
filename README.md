@@ -2,7 +2,7 @@ Preventing Suicide in AIs
 =======
 
 
-We will be using the environments from [AI Safety Gridworlds](https://github.com/deepmind/ai-safety-gridworlds) and using reinforcement learning to focus on making AI’s safer even when a constraint for the safety concern isn’t specified. 
+We will be using the environments from [AI Safety Gridworlds](https://github.com/deepmind/ai-safety-gridworlds) with Rainbow's Agent and using reinforcement learning to focus on making AI’s safer even when a constraint for the safety concern isn’t specified. 
 We will be attempting to solve this problem by reframing this robustness problem as a specification problem, and testing changes to the AI’s reward function. 
 
 
