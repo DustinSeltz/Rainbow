@@ -6,7 +6,7 @@ We will be using the environments from [AI Safety Gridworlds](https://github.com
 We will be attempting to solve this problem by reframing this robustness problem as a specification problem, and testing changes to the AI’s reward function. 
 
 
-Requirements
+Rainbow's Requirements
 ------------
 
 - [atari-py](https://github.com/openai/atari-py)
@@ -18,7 +18,7 @@ To install all dependencies with Anaconda run `conda env create -f environment.y
 
 Available Atari games can be found in the [`atari-py` ROMs folder](https://github.com/openai/atari-py/tree/master/atari_py/atari_roms).
 
-Acknowledgements
+Rainbow's Acknowledgements
 ----------------
 
 - [@floringogianu](https://github.com/floringogianu) for [categorical-dqn](https://github.com/floringogianu/categorical-dqn)
@@ -27,7 +27,7 @@ Acknowledgements
 - [@openai](https://github.com/openai) for [Baselines](https://github.com/openai/baselines)
 - [@mtthss](https://github.com/mtthss) for [implementation details](https://github.com/Kaixhin/Rainbow/wiki/Matteo's-Notes)
 
-References
+Rainbow's References
 ----------
 
 [1] [Rainbow: Combining Improvements in Deep Reinforcement Learning](https://arxiv.org/abs/1710.02298)  
